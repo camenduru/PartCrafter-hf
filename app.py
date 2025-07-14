@@ -106,9 +106,11 @@ def run_triposg(image_path: str,
                 num_tokens: int = 1024,
                 num_inference_steps: int = 50,
                 guidance_scale: float = 7.0,
-                max_num_expanded_coords: str = 1e9,
                 use_flash_decoder: bool = False,
                 rmbg: bool = True):
+
+    max_num_expanded_coords = 1e9
+    
     """
     Generate 3D part meshes from an input image.
     """
@@ -183,7 +185,6 @@ def build_demo():
                 num_tokens = gr.Slider(256, 2048, value=1024, step=64, label="Num Tokens")
                 num_steps = gr.Slider(1, 100, value=50, step=1, label="Inference Steps")
                 guidance = gr.Slider(1.0, 20.0, value=7.0, step=0.1, label="Guidance Scale")
-                max_coords = gr.Text(value="1e9", label="Max Expanded Coords")
                 flash_decoder = gr.Checkbox(value=False, label="Use Flash Decoder")
                 remove_bg = gr.Checkbox(value=False, label="Remove Background (RMBG)")
                 run_button = gr.Button("Generate 3D Parts")
@@ -199,7 +200,6 @@ def build_demo():
                             1024,
                             50,
                             7.0,
-                            1e9,
                             False,
                             True
                         ], 
@@ -214,7 +214,7 @@ def build_demo():
 
         run_button.click(fn=run_triposg,
                          inputs=[input_image, num_parts, seed, num_tokens, num_steps,
-                                 guidance, max_coords, flash_decoder, remove_bg],
+                                 guidance, flash_decoder, remove_bg],
                          outputs=[output_model, output_dir])
     return demo
 
