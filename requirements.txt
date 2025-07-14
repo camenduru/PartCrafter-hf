@@ -17,6 +17,6 @@ typeguard
 matplotlib
 imageio-ffmpeg
 pyrender
-deepspeed
+#deepspeed
 wandb[media]
 colormaps
