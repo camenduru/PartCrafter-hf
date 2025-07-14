@@ -171,6 +171,11 @@ def run_triposg(image_path: str,
 
 
     export_dir = os.path.join(os.environ["PARTCRAFTER_PROCESSED"], session_id)
+
+    # If it already exists, delete it (and all its contents)
+    if os.path.exists(export_dir):
+        shutil.rmtree(export_dir)
+    
     os.makedirs(export_dir, exist_ok=True)
 
     parts = []
