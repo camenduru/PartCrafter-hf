@@ -31,9 +31,9 @@ import subprocess
 def install_cuda_toolkit():
     CUDA_TOOLKIT_URL = "https://developer.download.nvidia.com/compute/cuda/12.6.0/local_installers/cuda_12.6.0_560.28.03_linux.run"
     CUDA_TOOLKIT_FILE = "/tmp/%s" % os.path.basename(CUDA_TOOLKIT_URL)
-    subprocess.call(["wget", "-q", CUDA_TOOLKIT_URL, "-O", CUDA_TOOLKIT_FILE])
-    subprocess.call(["chmod", "+x", CUDA_TOOLKIT_FILE])
-    subprocess.call([CUDA_TOOLKIT_FILE, "--toolkit"])
+    subprocess.check_call(["wget", "-q", CUDA_TOOLKIT_URL, "-O", CUDA_TOOLKIT_FILE], shell=True)
+    subprocess.check_call(["chmod", "+x", CUDA_TOOLKIT_FILE], shell=True)
+    subprocess.check_call([CUDA_TOOLKIT_FILE, "--toolkit"], shell=True)
 
     os.environ["CUDA_HOME"] = "/usr/local/cuda"
     os.environ["PATH"] = "%s/bin:%s" % (os.environ["CUDA_HOME"], os.environ["PATH"])
@@ -47,7 +47,7 @@ def install_cuda_toolkit():
 
 print("installing cuda toolkit")
 install_cuda_toolkit()
-peinr("finished")
+print("finished")
 
 print(os.environ["CUDA_HOME"])
 
