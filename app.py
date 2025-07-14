@@ -215,7 +215,7 @@ def build_demo():
                         </p>
                         """
                     )
-                    output_model = gr.Model3D(label="Merged 3D Object")
+                    output_model = gr.Model3D(label="Merged 3D Object", height=512)
                     output_dir = gr.Textbox(label="Export Directory")
                     examples = gr.Examples(
                         
