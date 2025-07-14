@@ -65,7 +65,7 @@ def sh(cmd_list, extra_env=None):
 
 # install with FORCE_CUDA=1
 sh(["pip", "install", "diso"], {"FORCE_CUDA": "1"})
-sh(["pip", "install", "torch-cluster", "-f", "https://data.pyg.org/whl/torch-2.7.0+126.html"])
+# sh(["pip", "install", "torch-cluster", "-f", "https://data.pyg.org/whl/torch-2.7.0+126.html"])
 
 
 
@@ -154,17 +154,6 @@ def run_triposg(image_path: str,
     merged.export(glb_path)
 
     mesh_file = first_file_from_dir(export_dir, "glb")
-
-    print(mesh_file)
-
-    # 1) Check for the file’s existence
-    if not os.path.exists(glb_path):
-        raise FileNotFoundError(f"No merged .glb found at {glb_path}")
-
-    # 2) List every file in the folder
-    all_files = os.listdir(export_dir)
-    
-    print(f"Files in {export_dir}: {all_files}")
     
     return mesh_file, export_dir
 
@@ -203,9 +192,31 @@ def build_demo():
                         remove_bg = gr.Checkbox(value=False, label="Remove Background (RMBG)")
 
                 with gr.Column(scale=1):
+                    gr.HTML(
+                        """
+                        <p style="opacity: 0.6; font-style: italic;">
+                          This might take a few seconds to load the 3D model
+                        </p>
+                        """
+                    )
                     output_model = gr.Model3D(label="Merged 3D Object")
                     output_dir = gr.Textbox(label="Export Directory")
                     examples = gr.Examples(
+                        
+                        examples=[
+                            [
+                                "assets/images/np5_b81f29e567ea4db48014f89c9079e403.png", 
+                                10,
+                            ], 
+                            
+                        ],
+                        examples=[
+                            [
+                                "assets/images/np10_cc486e491a2c499f9fd2aad2b02c6ccb.png", 
+                                10,
+                            ], 
+                            
+                        ],
                         examples=[
                             [
                                 "assets/images/np4_7bd5d25aa77b4fb18e780d7a4c97d342.png", 
