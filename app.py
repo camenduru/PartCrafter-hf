@@ -96,7 +96,7 @@ pipe: PartCrafterPipeline = PartCrafterPipeline.from_pretrained(partcrafter_weig
 @spaces.GPU()
 @torch.no_grad()
 def run_triposg(image_path: str,
-                num_parts: int = 10,
+                num_parts: int = 1,
                 seed: int = 123,
                 num_tokens: int = 1024,
                 num_inference_steps: int = 50,
@@ -176,14 +176,14 @@ def build_demo():
                     examples=[
                         [
                             "examples/np10_cc486e491a2c499f9fd2aad2b02c6ccb.png", 
-                            10,
+                            1,
                             123,
                             1024,
                             50,
                             7.0,
                             1e9,
                             False,
-                            False
+                            True
                         ], 
                         
                     ],
