@@ -188,7 +188,7 @@ def build_demo():
         with gr.Column(elem_id="col-container"):
 
             gr.Markdown(
-            """ # PartCrafter – Structured 3D Mesh Generation via Compositional Latent Diffusion Transformers
+            """ PartCrafter – Structured 3D Mesh Generation via Compositional Latent Diffusion Transformers
     
             • Source: [Github](https://github.com/wgsxm/PartCrafter)  
             • HF Space by : [@alexandernasa](https://twitter.com/alexandernasa/)  """
@@ -216,7 +216,7 @@ def build_demo():
                         """
                     )
                     output_model = gr.Model3D(label="Merged 3D Object", height=512)
-                    output_dir = gr.Textbox(label="Export Directory")
+                    output_dir = gr.Textbox(label="Export Directory", visible=False)
                     examples = gr.Examples(
                         
                         examples=[
