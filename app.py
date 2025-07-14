@@ -26,7 +26,7 @@ for sitedir in site.getsitepackages():
 # Clear caches so importlib will pick up new modules
 importlib.invalidate_caches()
 
-# def sh(cmd): subprocess.check_call(cmd, shell=True)
+def sh(cmd): subprocess.check_call(cmd, shell=True)
 
 def install_cuda_toolkit():
     CUDA_TOOLKIT_URL = "https://developer.download.nvidia.com/compute/cuda/12.6.0/local_installers/cuda_12.6.0_560.28.03_linux.run"
@@ -56,8 +56,14 @@ print("finished")
 header_path = "/usr/local/cuda/include/cuda_runtime.h"
 print(f"{header_path} exists:", os.path.exists(header_path))
 
-# my_env = os.environ.copy()
-subprocess.run(["FORCE_CUDA=1", "pip", "install","diso"], check=True)
+def sh(cmd_list, extra_env=None):
+    env = os.environ.copy()
+    if extra_env:
+        env.update(extra_env)
+    subprocess.check_call(cmd_list, env=env)
+
+# install with FORCE_CUDA=1
+sh(["pip", "install", "diso"], {"FORCE_CUDA": "1"})
 
 
 # tell Python to re-scan site-packages now that the egg-link exists
