@@ -110,7 +110,7 @@ def run_triposg(image_path: str,
     if rmbg:
         img_pil = prepare_image(image_path, bg_color=np.array([1.0, 1.0, 1.0]), rmbg_net=rmbg_net)
     else:
-        img_pil = Image.open(image_path_or_pil)
+        img_pil = Image.open(image_path)
 
     set_seed(seed)
     start_time = time.time()
