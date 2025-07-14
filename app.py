@@ -28,28 +28,28 @@ import subprocess
 
 # def sh(cmd): subprocess.check_call(cmd, shell=True)
 
-# def install_cuda_toolkit():
-#     CUDA_TOOLKIT_URL = "https://developer.download.nvidia.com/compute/cuda/12.6.0/local_installers/cuda_12.6.0_560.28.03_linux.run"
-#     CUDA_TOOLKIT_FILE = "/tmp/%s" % os.path.basename(CUDA_TOOLKIT_URL)
-#     subprocess.call(["wget", "-q", CUDA_TOOLKIT_URL, "-O", CUDA_TOOLKIT_FILE])
-#     subprocess.call(["chmod", "+x", CUDA_TOOLKIT_FILE])
-#     subprocess.call([CUDA_TOOLKIT_FILE, "--silent", "--toolkit"])
+def install_cuda_toolkit():
+    CUDA_TOOLKIT_URL = "https://developer.download.nvidia.com/compute/cuda/12.6.0/local_installers/cuda_12.6.0_560.28.03_linux.run"
+    CUDA_TOOLKIT_FILE = "/tmp/%s" % os.path.basename(CUDA_TOOLKIT_URL)
+    subprocess.call(["wget", "-q", CUDA_TOOLKIT_URL, "-O", CUDA_TOOLKIT_FILE])
+    subprocess.call(["chmod", "+x", CUDA_TOOLKIT_FILE])
+    subprocess.call([CUDA_TOOLKIT_FILE, "--silent", "--toolkit"])
 
-#     os.environ["CUDA_HOME"] = "/usr/local/cuda"
-#     os.environ["PATH"] = "%s/bin:%s" % (os.environ["CUDA_HOME"], os.environ["PATH"])
-#     os.environ["LD_LIBRARY_PATH"] = "%s/lib:%s" % (
-#         os.environ["CUDA_HOME"],
-#         "" if "LD_LIBRARY_PATH" not in os.environ else os.environ["LD_LIBRARY_PATH"],
-#     )
-#     # Fix: arch_list[-1] += '+PTX'; IndexError: list index out of range
-#     os.environ["TORCH_CUDA_ARCH_LIST"] = "9.0"
-#     print("==> finished installation")
+    os.environ["CUDA_HOME"] = "/usr/local/cuda"
+    os.environ["PATH"] = "%s/bin:%s" % (os.environ["CUDA_HOME"], os.environ["PATH"])
+    os.environ["LD_LIBRARY_PATH"] = "%s/lib:%s" % (
+        os.environ["CUDA_HOME"],
+        "" if "LD_LIBRARY_PATH" not in os.environ else os.environ["LD_LIBRARY_PATH"],
+    )
+    # Fix: arch_list[-1] += '+PTX'; IndexError: list index out of range
+    os.environ["TORCH_CUDA_ARCH_LIST"] = "9.0"
+    print("==> finished installation")
     
-# install_cuda_toolkit()
+install_cuda_toolkit()
+
+print(os.environ["CUDA_HOME"])
 
 # my_env = os.environ.copy()
-subprocess.run(["apt-get", "update"], check=True)
-subprocess.run(["apt-get", "install", "cuda-toolkit-12-6"], check=True)
 subprocess.run(["pip", "install","diso"], check=True)
 
 
