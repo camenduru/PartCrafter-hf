@@ -260,31 +260,34 @@ def build_demo():
                         </p>
                         """
                     )
-                    output_model = gr.Model3D(label="Merged 3D Object")
-                    output_dir = gr.Textbox(label="Export Directory", visible=False)
-                    download_zip = gr.File(label="Download All Parts (zip)", height=72)
-                    examples = gr.Examples(
-                        
-                        examples=[
-                            [
-                                "assets/images/np5_b81f29e567ea4db48014f89c9079e403.png", 
-                                5,
-                            ], 
-                            [
-                                "assets/images/np7_1c004909dedb4ebe8db69b4d7b077434.png", 
-                                7,
-                            ], 
-                            [
-                                "assets/images/np13_b07b4d858z.png", 
-                                13,
-                            ], 
+                    with gr.Row(scale=2):
+                        output_model = gr.Model3D(label="Merged 3D Object")
+                        output_dir = gr.Textbox(label="Export Directory", visible=False)
+                    with gr.Row(scale=1):
+                        download_zip = gr.File(label="Download All Parts (zip)")
+                    with gr.Row(scale=3):
+                        examples = gr.Examples(
                             
-                        ],
-                        inputs=[input_image, num_parts],
-                        outputs=[output_model, output_dir, download_zip],
-                        fn=run_triposg,
-                        cache_examples=True,
-                    )
+                            examples=[
+                                [
+                                    "assets/images/np5_b81f29e567ea4db48014f89c9079e403.png", 
+                                    5,
+                                ], 
+                                [
+                                    "assets/images/np7_1c004909dedb4ebe8db69b4d7b077434.png", 
+                                    7,
+                                ], 
+                                [
+                                    "assets/images/np13_b07b4d858z.png", 
+                                    13,
+                                ], 
+                                
+                            ],
+                            inputs=[input_image, num_parts],
+                            outputs=[output_model, output_dir, download_zip],
+                            fn=run_triposg,
+                            cache_examples=True,
+                        )
     
             run_button.click(fn=run_triposg,
                              inputs=[input_image, num_parts, seed, num_tokens, num_steps,
