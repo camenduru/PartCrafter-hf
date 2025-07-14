@@ -141,9 +141,12 @@ def run_triposg(image: Image.Image,
     os.makedirs(export_dir, exist_ok=True)
     for idx, mesh in enumerate(outputs):
         mesh.export(os.path.join(export_dir, f"part_{idx:02}.glb"))
-    merged.export(os.path.join(export_dir, "object.glb"))
 
-    return merged, export_dir
+    glb_path = os.path.join(export_dir, "object.glb")
+    merged.export(glb_path)
+    print(glb_path)
+
+    return glb_path, export_dir
 
 # Gradio Interface
 def build_demo():
@@ -178,6 +181,7 @@ def build_demo():
                             1024,
                             50,
                             7.0,
+                            1e9,
                             False,
                             True
                         ], 
