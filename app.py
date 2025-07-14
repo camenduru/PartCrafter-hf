@@ -310,7 +310,7 @@ def build_demo():
                 """
                 <div style="text-align: center;">
                     <p style="font-size:16px; display: inline; margin: 0;">
-                        <strong>🧩 PartCrafter</strong> – Structured 3D Mesh Generation via Compositional Latent Diffusion Transformers
+                        <strong>PartCrafter</strong> – Structured 3D Mesh Generation via Compositional Latent Diffusion Transformers
                     </p>
                     <a href="https://github.com/wgsxm/PartCrafter" style="display: inline-block; vertical-align: middle; margin-left: 0.5em;">
                         <img src="https://img.shields.io/badge/GitHub-Repo-blue" alt="GitHub Repo">
@@ -326,7 +326,7 @@ def build_demo():
                     )
                     input_image = gr.Image(type="filepath", label="Input Image", height=256)
                     num_parts = gr.Slider(1, MAX_NUM_PARTS, value=4, step=1, label="Number of Parts")
-                    run_button = gr.Button("Generate 3D Parts", variant="primary")
+                    run_button = gr.Button("🧩 Generate 3D Parts", variant="primary")
                     
                     with gr.Accordion("Advanced Settings", open=False):
                         seed = gr.Number(value=0, label="Random Seed", precision=0)
