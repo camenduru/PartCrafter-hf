@@ -19,3 +19,4 @@ pyrender
 deepspeed
 wandb[media]
 colormaps
+torchvision
