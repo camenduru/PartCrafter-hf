@@ -19,3 +19,4 @@ deepspeed
 wandb[media]
 colormaps
 torchvision
+torch_cluster @ https://github.com/OutofAi/PyTorch3D-wheels/releases/download/0.7.8/torch_cluster-1.6.3.postHopper271126-cp310-cp310-linux_x86_64.whl
