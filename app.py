@@ -16,52 +16,52 @@ from huggingface_hub import snapshot_download
 from PIL import Image
 from accelerate.utils import set_seed
 
-# import subprocess
-# import importlib, site, sys
+import subprocess
+import importlib, site, sys
 
-# # Re-discover all .pth/.egg-link files
-# for sitedir in site.getsitepackages():
-#     site.addsitedir(sitedir)
+# Re-discover all .pth/.egg-link files
+for sitedir in site.getsitepackages():
+    site.addsitedir(sitedir)
 
-# # Clear caches so importlib will pick up new modules
-# importlib.invalidate_caches()
+# Clear caches so importlib will pick up new modules
+importlib.invalidate_caches()
 
-# # def sh(cmd): subprocess.check_call(cmd, shell=True)
+# def sh(cmd): subprocess.check_call(cmd, shell=True)
 
-# def install_cuda_toolkit():
-#     CUDA_TOOLKIT_URL = "https://developer.download.nvidia.com/compute/cuda/12.6.0/local_installers/cuda_12.6.0_560.28.03_linux.run"
-#     CUDA_TOOLKIT_FILE = "/tmp/%s" % os.path.basename(CUDA_TOOLKIT_URL)
-#     subprocess.check_call(["wget", "-q", CUDA_TOOLKIT_URL, "-O", CUDA_TOOLKIT_FILE])
-#     subprocess.check_call(["chmod", "+x", CUDA_TOOLKIT_FILE])
-#     subprocess.check_call([CUDA_TOOLKIT_FILE, "--silent", "--toolkit"])
+def install_cuda_toolkit():
+    CUDA_TOOLKIT_URL = "https://developer.download.nvidia.com/compute/cuda/12.6.0/local_installers/cuda_12.6.0_560.28.03_linux.run"
+    CUDA_TOOLKIT_FILE = "/tmp/%s" % os.path.basename(CUDA_TOOLKIT_URL)
+    subprocess.check_call(["wget", "-q", CUDA_TOOLKIT_URL, "-O", CUDA_TOOLKIT_FILE])
+    subprocess.check_call(["chmod", "+x", CUDA_TOOLKIT_FILE])
+    subprocess.check_call([CUDA_TOOLKIT_FILE, "--silent", "--toolkit"])
 
-#     os.environ["CUDA_HOME"] = "/usr/local/cuda"
-#     os.environ["PATH"] = "%s/bin:%s" % (os.environ["CUDA_HOME"], os.environ["PATH"])
-#     os.environ["LD_LIBRARY_PATH"] = "%s/lib:%s" % (
-#         os.environ["CUDA_HOME"],
-#         "" if "LD_LIBRARY_PATH" not in os.environ else os.environ["LD_LIBRARY_PATH"],
-#     )
-#     # add for compiler header lookup
-#     os.environ["CPATH"] = f"{os.environ['CUDA_HOME']}/include" + (
-#         f":{os.environ['CPATH']}" if "CPATH" in os.environ else ""
-#     )
-#     # Fix: arch_list[-1] += '+PTX'; IndexError: list index out of range
-#     # os.environ["TORCH_CUDA_ARCH_LIST"] = "9.0"
-#     print("==> finished installation")
+    os.environ["CUDA_HOME"] = "/usr/local/cuda"
+    os.environ["PATH"] = "%s/bin:%s" % (os.environ["CUDA_HOME"], os.environ["PATH"])
+    os.environ["LD_LIBRARY_PATH"] = "%s/lib:%s" % (
+        os.environ["CUDA_HOME"],
+        "" if "LD_LIBRARY_PATH" not in os.environ else os.environ["LD_LIBRARY_PATH"],
+    )
+    # add for compiler header lookup
+    os.environ["CPATH"] = f"{os.environ['CUDA_HOME']}/include" + (
+        f":{os.environ['CPATH']}" if "CPATH" in os.environ else ""
+    )
+    # Fix: arch_list[-1] += '+PTX'; IndexError: list index out of range
+    # os.environ["TORCH_CUDA_ARCH_LIST"] = "9.0"
+    print("==> finished installation")
 
-# print("installing cuda toolkit")
-# install_cuda_toolkit()
-# print("finished")
+print("installing cuda toolkit")
+install_cuda_toolkit()
+print("finished")
 
-# header_path = "/usr/local/cuda/include/cuda_runtime.h"
-# print(f"{header_path} exists:", os.path.exists(header_path))
+header_path = "/usr/local/cuda/include/cuda_runtime.h"
+print(f"{header_path} exists:", os.path.exists(header_path))
 
-# # my_env = os.environ.copy()
-# subprocess.run(["pip", "install","diso"], check=True)
+# my_env = os.environ.copy()
+subprocess.run(["FORCE_CUDA=1", "pip", "install","diso"], check=True)
 
 
-# # tell Python to re-scan site-packages now that the egg-link exists
-# import importlib, site; site.addsitedir(site.getsitepackages()[0]); importlib.invalidate_caches()
+# tell Python to re-scan site-packages now that the egg-link exists
+import importlib, site; site.addsitedir(site.getsitepackages()[0]); importlib.invalidate_caches()
 
 
 from src.utils.data_utils import get_colored_mesh_composition, scene_to_parts, load_surfaces
