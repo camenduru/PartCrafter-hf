@@ -146,6 +146,15 @@ def run_triposg(image_path: str,
     merged.export(glb_path)
     print(glb_path)
 
+    # 1) Check for the file’s existence
+    if not os.path.exists(glb_path):
+        raise FileNotFoundError(f"No merged .glb found at {glb_path}")
+
+    # 2) List every file in the folder
+    all_files = os.listdir(export_dir)
+    
+    print(f"Files in {export_dir}: {all_files}")
+    
     return glb_path, export_dir
 
 # Gradio Interface
