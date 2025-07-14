@@ -12,7 +12,7 @@ numpy==1.26.4
 peft
 jaxtyping
 typeguard
-diso
+#diso
 matplotlib
 imageio-ffmpeg
 pyrender
