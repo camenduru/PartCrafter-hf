@@ -47,10 +47,9 @@ import subprocess
     
 # install_cuda_toolkit()
 
-!apt-get update
-!apt-get install cuda-toolkit-12-6
-
 # my_env = os.environ.copy()
+subprocess.run(["apt-get", "update"], check=True)
+subprocess.run(["apt-get", "install", "cuda-toolkit-12-6"], check=True)
 subprocess.run(["pip", "install","diso"], check=True)
 
 
