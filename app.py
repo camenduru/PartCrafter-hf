@@ -189,7 +189,7 @@ def build_demo():
                         num_steps = gr.Slider(1, 100, value=50, step=1, label="Inference Steps")
                         guidance = gr.Slider(1.0, 20.0, value=7.0, step=0.1, label="Guidance Scale")
                         flash_decoder = gr.Checkbox(value=False, label="Use Flash Decoder")
-                        remove_bg = gr.Checkbox(value=False, label="Remove Background (RMBG)")
+                        remove_bg = gr.Checkbox(value=True, label="Remove Background (RMBG)")
 
                 with gr.Column(scale=1):
                     gr.HTML(
