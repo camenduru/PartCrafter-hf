@@ -102,7 +102,7 @@ def first_file_from_dir(directory, ext):
 @torch.no_grad()
 def run_triposg(image_path: str,
                 num_parts: int = 1,
-                seed: int = 123,
+                seed: int = 0,
                 num_tokens: int = 1024,
                 num_inference_steps: int = 50,
                 guidance_scale: float = 7.0,
@@ -170,53 +170,60 @@ def run_triposg(image_path: str,
 
 # Gradio Interface
 def build_demo():
-    with gr.Blocks() as demo:
-        gr.Markdown(
-        """ # PartCrafter – Structured 3D Mesh Generation via Compositional Latent Diffusion Transformers
+    css = """
+        #col-container {
+            margin: 0 auto;
+            max-width: 1024px;
+        }
+        """
+    theme = gr.themes.Ocean()
+    
+    with gr.Blocks(css=css, theme=theme) as demo:
+    
+        with gr.Column(elem_id="col-container"):
 
-        • Source: [Github](https://github.com/wgsxm/PartCrafter)  
-        • HF Space by : [@alexandernasa](https://twitter.com/alexandernasa/)  """
-        )
-        with gr.Row():
-            with gr.Column(scale=1):
-                input_image = gr.Image(type="filepath", label="Input Image")
-                num_parts = gr.Slider(1, MAX_NUM_PARTS, value=4, step=1, label="Number of Parts")
-                seed = gr.Number(value=0, label="Random Seed", precision=0)
-                num_tokens = gr.Slider(256, 2048, value=1024, step=64, label="Num Tokens")
-                num_steps = gr.Slider(1, 100, value=50, step=1, label="Inference Steps")
-                guidance = gr.Slider(1.0, 20.0, value=7.0, step=0.1, label="Guidance Scale")
-                flash_decoder = gr.Checkbox(value=False, label="Use Flash Decoder")
-                remove_bg = gr.Checkbox(value=False, label="Remove Background (RMBG)")
-                run_button = gr.Button("Generate 3D Parts")
-            with gr.Column(scale=1):
-                output_model = gr.Model3D(label="Merged 3D Object")
-                output_dir = gr.Textbox(label="Export Directory")
-                examples = gr.Examples(
-                    examples=[
-                        [
-                            "assets/images/np4_7bd5d25aa77b4fb18e780d7a4c97d342.png", 
-                            4,
-                            123,
-                            1024,
-                            50,
-                            7.0,
-                            False,
-                            True
-                        ], 
-                        
-                    ],
-                    inputs=[input_image, num_parts, seed, num_tokens, num_steps,
-                                 guidance, max_coords, flash_decoder, remove_bg],
-                    outputs=[output_model, output_dir],
-                    fn=run_triposg,
-                    cache_examples=True,
-                )
+            gr.Markdown(
+            """ # PartCrafter – Structured 3D Mesh Generation via Compositional Latent Diffusion Transformers
+    
+            • Source: [Github](https://github.com/wgsxm/PartCrafter)  
+            • HF Space by : [@alexandernasa](https://twitter.com/alexandernasa/)  """
+            )
+            with gr.Row():
+                with gr.Column(scale=1):
+                    input_image = gr.Image(type="filepath", label="Input Image")
+                    num_parts = gr.Slider(1, MAX_NUM_PARTS, value=4, step=1, label="Number of Parts")
+                    run_button = gr.Button("Generate 3D Parts", variant="primary")
+                    
+                    with gr.Accordion("Advanced Settings", open=False):
+                        seed = gr.Number(value=0, label="Random Seed", precision=0)
+                        num_tokens = gr.Slider(256, 2048, value=1024, step=64, label="Num Tokens")
+                        num_steps = gr.Slider(1, 100, value=50, step=1, label="Inference Steps")
+                        guidance = gr.Slider(1.0, 20.0, value=7.0, step=0.1, label="Guidance Scale")
+                        flash_decoder = gr.Checkbox(value=False, label="Use Flash Decoder")
+                        remove_bg = gr.Checkbox(value=False, label="Remove Background (RMBG)")
 
-        run_button.click(fn=run_triposg,
-                         inputs=[input_image, num_parts, seed, num_tokens, num_steps,
-                                 guidance, flash_decoder, remove_bg],
-                         outputs=[output_model, output_dir])
-    return demo
+                with gr.Column(scale=1):
+                    output_model = gr.Model3D(label="Merged 3D Object")
+                    output_dir = gr.Textbox(label="Export Directory")
+                    examples = gr.Examples(
+                        examples=[
+                            [
+                                "assets/images/np4_7bd5d25aa77b4fb18e780d7a4c97d342.png", 
+                                4,
+                            ], 
+                            
+                        ],
+                        inputs=[input_image, num_parts],
+                        outputs=[output_model, output_dir],
+                        fn=run_triposg,
+                        cache_examples=True,
+                    )
+    
+            run_button.click(fn=run_triposg,
+                             inputs=[input_image, num_parts, seed, num_tokens, num_steps,
+                                     guidance, flash_decoder, remove_bg],
+                             outputs=[output_model, output_dir])
+        return demo
 
 if __name__ == "__main__":
     demo = build_demo()
