@@ -46,7 +46,7 @@ def install_cuda_toolkit():
         f":{os.environ['CPATH']}" if "CPATH" in os.environ else ""
     )
     # Fix: arch_list[-1] += '+PTX'; IndexError: list index out of range
-    # os.environ["TORCH_CUDA_ARCH_LIST"] = "9.0"
+    os.environ["TORCH_CUDA_ARCH_LIST"] = "8.9;9.0"
     print("==> finished installation")
 
 print("installing cuda toolkit")
