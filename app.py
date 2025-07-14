@@ -80,7 +80,7 @@ from src.models.briarmbg import BriaRMBG
 
 # Constants
 MAX_NUM_PARTS = 16
-DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+DEVICE = "cuda" 
 DTYPE = torch.float16
 
 # Download and initialize models
@@ -95,22 +95,22 @@ pipe: PartCrafterPipeline = PartCrafterPipeline.from_pretrained(partcrafter_weig
 
 @spaces.GPU()
 @torch.no_grad()
-def run_triposg(image: Image.Image,
-                num_parts: int,
-                seed: int,
-                num_tokens: int,
-                num_inference_steps: int,
-                guidance_scale: float,
-                max_num_expanded_coords: float,
-                use_flash_decoder: bool,
-                rmbg: bool):
+def run_triposg(image_path: str,
+                num_parts: int = 10,
+                seed: int = 123,
+                num_tokens: int = 1024,
+                num_inference_steps: int = 50,
+                guidance_scale: float = 7.0,
+                max_num_expanded_coords: float = 1e9,
+                use_flash_decoder: bool = False,
+                rmbg: bool = True):
     """
     Generate 3D part meshes from an input image.
     """
     if rmbg:
-        img_pil = prepare_image(image, bg_color=np.array([1.0, 1.0, 1.0]), rmbg_net=rmbg_net)
+        img_pil = prepare_image(image_path, bg_color=np.array([1.0, 1.0, 1.0]), rmbg_net=rmbg_net)
     else:
-        img_pil = image
+        img_pil = Image.open(image_path_or_pil)
 
     set_seed(seed)
     start_time = time.time()
@@ -159,7 +159,7 @@ def build_demo():
         )
         with gr.Row():
             with gr.Column(scale=1):
-                input_image = gr.Image(type="pil", label="Input Image")
+                input_image = gr.Image(type="filepath", label="Input Image")
                 num_parts = gr.Slider(1, MAX_NUM_PARTS, value=4, step=1, label="Number of Parts")
                 seed = gr.Number(value=0, label="Random Seed", precision=0)
                 num_tokens = gr.Slider(256, 2048, value=1024, step=64, label="Num Tokens")
