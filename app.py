@@ -253,7 +253,6 @@ def build_demo():
                         """
                     )
                     output_model = gr.Model3D(label="Merged 3D Object")
-                    parts_model = gr.Model3D(label="Parts")
                     output_dir = gr.Textbox(label="Export Directory", visible=False)
                     examples = gr.Examples(
                         
