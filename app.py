@@ -100,6 +100,84 @@ def first_file_from_dir(directory, ext):
     files = glob.glob(os.path.join(directory, f"*.{ext}"))
     return sorted(files)[0] if files else None
 
+
+def explode_mesh(mesh, explosion_scale=0.4):    
+
+    if isinstance(mesh, trimesh.Scene):
+        scene = mesh
+    elif isinstance(mesh, trimesh.Trimesh):
+        print("Warning: Single mesh provided, can't create exploded view")
+        scene = trimesh.Scene(mesh)
+        return scene
+    else:
+        print(f"Warning: Unexpected mesh type: {type(mesh)}")
+        scene = mesh
+
+    if len(scene.geometry) <= 1:
+        print("Only one geometry found - nothing to explode")
+        return scene
+    
+    print(f"[EXPLODE_MESH] Starting mesh explosion with scale {explosion_scale}")
+    print(f"[EXPLODE_MESH] Processing {len(scene.geometry)} parts")
+    
+    exploded_scene = trimesh.Scene()
+    
+    part_centers = []
+    geometry_names = []
+    
+    for geometry_name, geometry in scene.geometry.items():
+        if hasattr(geometry, 'vertices'):
+            transform = scene.graph[geometry_name][0]
+            vertices_global = trimesh.transformations.transform_points(
+                geometry.vertices, transform)
+            center = np.mean(vertices_global, axis=0)
+            part_centers.append(center)
+            geometry_names.append(geometry_name)
+            print(f"[EXPLODE_MESH] Part {geometry_name}: center = {center}")
+    
+    if not part_centers:
+        print("No valid geometries with vertices found")
+        return scene
+    
+    part_centers = np.array(part_centers)
+    global_center = np.mean(part_centers, axis=0)
+    
+    print(f"[EXPLODE_MESH] Global center: {global_center}")
+    
+    for i, (geometry_name, geometry) in enumerate(scene.geometry.items()):
+        if hasattr(geometry, 'vertices'):
+            if i < len(part_centers):
+                part_center = part_centers[i]
+                direction = part_center - global_center
+                
+                direction_norm = np.linalg.norm(direction)
+                if direction_norm > 1e-6:
+                    direction = direction / direction_norm
+                else:
+                    direction = np.random.randn(3)
+                    direction = direction / np.linalg.norm(direction)
+                
+                offset = direction * explosion_scale
+            else:
+                offset = np.zeros(3)
+            
+            original_transform = scene.graph[geometry_name][0].copy()
+            
+            new_transform = original_transform.copy()
+            new_transform[:3, 3] = new_transform[:3, 3] + offset
+            
+            exploded_scene.add_geometry(
+                geometry, 
+                transform=new_transform, 
+                geom_name=geometry_name
+            )
+            
+            print(f"[EXPLODE_MESH] Part {geometry_name}: moved by {np.linalg.norm(offset):.4f}")
+    
+    print("[EXPLODE_MESH] Mesh explosion complete")
+    return exploded_scene
+    
+
 def get_duration(
     image_path,
     num_parts,
