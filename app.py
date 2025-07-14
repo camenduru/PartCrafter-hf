@@ -29,7 +29,7 @@ importlib.invalidate_caches()
 def sh(cmd): subprocess.check_call(cmd, shell=True)
 
 def install_cuda_toolkit():
-    CUDA_TOOLKIT_URL = "https://developer.download.nvidia.com/compute/cuda/12.1.0/local_installers/cuda_12.1.0_530.30.02_linux.run"
+    CUDA_TOOLKIT_URL = "https://developer.download.nvidia.com/compute/cuda/12.6.0/local_installers/cuda_12.6.0_560.28.03_linux.run"
     CUDA_TOOLKIT_FILE = "/tmp/%s" % os.path.basename(CUDA_TOOLKIT_URL)
     subprocess.call(["wget", "-q", CUDA_TOOLKIT_URL, "-O", CUDA_TOOLKIT_FILE])
     subprocess.call(["chmod", "+x", CUDA_TOOLKIT_FILE])
