@@ -78,3 +78,4 @@ assets/robot.gif filter=lfs diff=lfs merge=lfs -text
 assets/teaser.png filter=lfs diff=lfs merge=lfs -text
 examples/np10_cc486e491a2c499f9fd2aad2b02c6ccb.png filter=lfs diff=lfs merge=lfs -text
 assets/images/np5_bird.png filter=lfs diff=lfs merge=lfs -text
+assets/images/np2_tree.png filter=lfs diff=lfs merge=lfs -text
