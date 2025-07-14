@@ -148,12 +148,12 @@ def run_triposg(image: Image.Image,
 # Gradio Interface
 def build_demo():
     with gr.Blocks() as demo:
-            gr.Markdown(
-            """ # PartCrafter – Structured 3D Mesh Generation via Compositional Latent Diffusion Transformers
-    
-            • Source: [Github](https://github.com/wgsxm/PartCrafter)  
-            • HF Space by : [@alexandernasa](https://twitter.com/alexandernasa/)  """
-            )
+        gr.Markdown(
+        """ # PartCrafter – Structured 3D Mesh Generation via Compositional Latent Diffusion Transformers
+
+        • Source: [Github](https://github.com/wgsxm/PartCrafter)  
+        • HF Space by : [@alexandernasa](https://twitter.com/alexandernasa/)  """
+        )
         with gr.Row():
             with gr.Column(scale=1):
                 input_image = gr.Image(type="pil", label="Input Image")
