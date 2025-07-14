@@ -47,8 +47,11 @@ import subprocess
     
 # install_cuda_toolkit()
 
+!apt-get update
+!apt-get install cuda-toolkit-12-6
+
 # my_env = os.environ.copy()
-# subprocess.run(["pip", "install","diso"], check=True, env=my_env)
+subprocess.run(["pip", "install","diso"], check=True)
 
 
 # # tell Python to re-scan site-packages now that the egg-link exists
