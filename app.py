@@ -33,7 +33,7 @@ def install_cuda_toolkit():
     CUDA_TOOLKIT_FILE = "/tmp/%s" % os.path.basename(CUDA_TOOLKIT_URL)
     subprocess.check_call(["wget", "-q", CUDA_TOOLKIT_URL, "-O", CUDA_TOOLKIT_FILE])
     subprocess.check_call(["chmod", "+x", CUDA_TOOLKIT_FILE])
-    subprocess.check_call([CUDA_TOOLKIT_FILE, "--toolkit"])
+    subprocess.check_call([CUDA_TOOLKIT_FILE, "--silent", "--toolkit"])
 
     os.environ["CUDA_HOME"] = "/usr/local/cuda"
     os.environ["PATH"] = "%s/bin:%s" % (os.environ["CUDA_HOME"], os.environ["PATH"])
