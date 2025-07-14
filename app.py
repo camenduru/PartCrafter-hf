@@ -336,7 +336,7 @@ def build_demo():
                         flash_decoder = gr.Checkbox(value=False, label="Use Flash Decoder")
                         remove_bg = gr.Checkbox(value=True, label="Remove Background (RMBG)")
 
-                with gr.Column(scale=1):
+                with gr.Column(scale=2):
                     gr.HTML(
                         """
                         <p style="opacity: 0.6; font-style: italic;">
