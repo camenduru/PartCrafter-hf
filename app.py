@@ -262,7 +262,7 @@ def build_demo():
                     )
                     output_model = gr.Model3D(label="Merged 3D Object")
                     output_dir = gr.Textbox(label="Export Directory", visible=False)
-                    download_zip = gr.File(label="Download All Parts (zip)")
+                    download_zip = gr.File(label="Download All Parts (zip)", height=72)
                     examples = gr.Examples(
                         
                         examples=[
@@ -275,9 +275,10 @@ def build_demo():
                                 7,
                             ], 
                             [
-                                "assets/images/np4_7bd5d25aa77b4fb18e780d7a4c97d342.png", 
-                                4,
+                                "assets/images/np13_b07b4d858z.png", 
+                                13,
                             ], 
+                            
                         ],
                         inputs=[input_image, num_parts],
                         outputs=[output_model, output_dir, download_zip],
