@@ -12,6 +12,7 @@ import torch
 print(f'torch version:{torch.__version__}')
 
 import trimesh
+import glob
 from huggingface_hub import snapshot_download
 from PIL import Image
 from accelerate.utils import set_seed
