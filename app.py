@@ -93,6 +93,10 @@ rmbg_net = BriaRMBG.from_pretrained(rmbg_weights_dir).to(DEVICE)
 rmbg_net.eval()
 pipe: PartCrafterPipeline = PartCrafterPipeline.from_pretrained(partcrafter_weights_dir).to(DEVICE, DTYPE)
 
+def first_file_from_dir(directory, ext):
+    files = glob.glob(os.path.join(directory, f"*.{ext}"))
+    return sorted(files)[0] if files else None
+
 @spaces.GPU()
 @torch.no_grad()
 def run_triposg(image_path: str,
@@ -144,7 +148,10 @@ def run_triposg(image_path: str,
 
     glb_path = os.path.join(export_dir, "object.glb")
     merged.export(glb_path)
-    print(glb_path)
+
+    mesh_file = first_file_from_dir(export_dir, "glb")
+
+    print(mesh_file)
 
     # 1) Check for the file’s existence
     if not os.path.exists(glb_path):
@@ -155,7 +162,7 @@ def run_triposg(image_path: str,
     
     print(f"Files in {export_dir}: {all_files}")
     
-    return glb_path, export_dir
+    return mesh_file, export_dir
 
 # Gradio Interface
 def build_demo():
