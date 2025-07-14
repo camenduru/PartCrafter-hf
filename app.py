@@ -271,14 +271,16 @@ def run_triposg(image_path: str,
     
     # Merge and color
     merged = get_colored_mesh_composition(outputs)
+    split_mesh = explode_mesh(merged)
 
 
-    glb_path = os.path.join(export_dir, "object.glb")
-    merged.export(glb_path)
+    merged_path = os.path.join(export_dir, "object.glb")
+    merged.export(merged_path)
 
-    mesh_file = first_file_from_dir(export_dir, "glb")
-    
-    return mesh_file, export_dir, zip_path
+    split_preview_path = os.path.join(export_dir, "object.glb")
+    split_mesh.export(split_preview_path)
+ 
+    return merged_path, split_preview_path, export_dir, zip_path
 
 def cleanup(request: gr.Request):
 
@@ -295,7 +297,7 @@ def build_demo():
     css = """
         #col-container {
             margin: 0 auto;
-            max-width: 1024px;
+            max-width: 1280px;
         }
         """
     theme = gr.themes.Ocean()
@@ -345,6 +347,7 @@ def build_demo():
                     )
                     with gr.Row(scale=2):
                         output_model = gr.Model3D(label="Merged 3D Object")
+                        split_model = gr.Model3D(label="Split Preview")
                         output_dir = gr.Textbox(label="Export Directory", visible=False)
                     with gr.Row(scale=1):
                         download_zip = gr.File(label="Download All Parts (zip)")
@@ -367,7 +370,7 @@ def build_demo():
                                 
                             ],
                             inputs=[input_image, num_parts],
-                            outputs=[output_model, output_dir, download_zip],
+                            outputs=[output_model, split_model, output_dir, download_zip],
                             fn=run_triposg,
                             cache_examples=True,
                         )
@@ -375,7 +378,7 @@ def build_demo():
             run_button.click(fn=run_triposg,
                              inputs=[input_image, num_parts, seed, num_tokens, num_steps,
                                      guidance, flash_decoder, remove_bg, session_state],
-                             outputs=[output_model, output_dir, download_zip])
+                             outputs=[output_model, split_model, output_dir, download_zip])
         return demo
 
 if __name__ == "__main__":
