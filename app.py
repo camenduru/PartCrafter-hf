@@ -41,6 +41,10 @@ def install_cuda_toolkit():
         os.environ["CUDA_HOME"],
         "" if "LD_LIBRARY_PATH" not in os.environ else os.environ["LD_LIBRARY_PATH"],
     )
+    # add for compiler header lookup
+    os.environ["CPATH"] = f"{os.environ['CUDA_HOME']}/include" + (
+        f":{os.environ['CPATH']}" if "CPATH" in os.environ else ""
+    )
     # Fix: arch_list[-1] += '+PTX'; IndexError: list index out of range
     os.environ["TORCH_CUDA_ARCH_LIST"] = "9.0"
     print("==> finished installation")
