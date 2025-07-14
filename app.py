@@ -271,13 +271,12 @@ def run_triposg(image_path: str,
     
     # Merge and color
     merged = get_colored_mesh_composition(outputs)
-
+    split_mesh = explode_mesh(merged)
+    
     merged_path = os.path.join(export_dir, "object.glb")
     merged.export(merged_path)
     
-    split_mesh = explode_mesh(merged)
-
-    split_preview_path = os.path.join(export_dir, "object.glb")
+    split_preview_path = os.path.join(export_dir, "split.glb")
     split_mesh.export(split_preview_path)
  
     return merged_path, split_preview_path, export_dir, zip_path
@@ -345,10 +344,11 @@ def build_demo():
                         </p>
                         """
                     )
-                    output_model = gr.Model3D(label="Merged 3D Object")
-                    split_model = gr.Model3D(label="Split Preview")
-                    output_dir = gr.Textbox(label="Export Directory", visible=False)
-                    download_zip = gr.File(label="Download All Parts (zip)")
+                    with gr.Row():
+                        output_model = gr.Model3D(label="Merged 3D Object")
+                        split_model = gr.Model3D(label="Split Preview")
+                        output_dir = gr.Textbox(label="Export Directory", visible=False)
+                        download_zip = gr.File(label="Download All Parts (zip)", visible=False)
             with gr.Row():
                 with gr.Column():
                     examples = gr.Examples(
