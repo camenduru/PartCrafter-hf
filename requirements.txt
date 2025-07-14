@@ -12,7 +12,7 @@ numpy==1.26.4
 peft
 jaxtyping
 typeguard
-#diso
+diso @ https://github.com/OutofAi/PyTorch3D-wheels/releases/download/0.7.8/diso-0.1.4.postHopper271126-cp310-cp310-linux_x86_64.whl
 matplotlib
 imageio-ffmpeg
 pyrender
