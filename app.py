@@ -64,6 +64,8 @@ def sh(cmd_list, extra_env=None):
 
 # install with FORCE_CUDA=1
 sh(["pip", "install", "diso"], {"FORCE_CUDA": "1"})
+sh(["pip", "install", "torch-cluster", "-f", "https://data.pyg.org/whl/torch-2.7.0+126.html"])
+
 
 
 # tell Python to re-scan site-packages now that the egg-link exists
