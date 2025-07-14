@@ -206,23 +206,16 @@ def build_demo():
                         examples=[
                             [
                                 "assets/images/np5_b81f29e567ea4db48014f89c9079e403.png", 
-                                10,
+                                5,
                             ], 
-                            
-                        ],
-                        examples=[
                             [
                                 "assets/images/np10_cc486e491a2c499f9fd2aad2b02c6ccb.png", 
                                 10,
                             ], 
-                            
-                        ],
-                        examples=[
                             [
                                 "assets/images/np4_7bd5d25aa77b4fb18e780d7a4c97d342.png", 
                                 4,
                             ], 
-                            
                         ],
                         inputs=[input_image, num_parts],
                         outputs=[output_model, output_dir],
