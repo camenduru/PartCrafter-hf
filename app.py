@@ -49,7 +49,8 @@ print("installing cuda toolkit")
 install_cuda_toolkit()
 print("finished")
 
-print(os.environ["CUDA_HOME"])
+header_path = "/usr/local/cuda/include/cuda_runtime.h"
+print(f"{header_path} exists:", os.path.exists(header_path))
 
 # my_env = os.environ.copy()
 subprocess.run(["pip", "install","diso"], check=True)
