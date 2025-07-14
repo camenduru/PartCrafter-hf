@@ -318,12 +318,12 @@ def build_demo():
                 </div>
                 """
             )
-            gr.Markdown(
-            """ 
-            • HF Space by : [@alexandernasa](https://twitter.com/alexandernasa/)  """
-            )
             with gr.Row():
                 with gr.Column(scale=1):
+                    gr.Markdown(
+                    """ 
+                    • HF Space by : [@alexandernasa](https://twitter.com/alexandernasa/)  """
+                    )
                     input_image = gr.Image(type="filepath", label="Input Image", height=256)
                     num_parts = gr.Slider(1, MAX_NUM_PARTS, value=4, step=1, label="Number of Parts")
                     run_button = gr.Button("Generate 3D Parts", variant="primary")
