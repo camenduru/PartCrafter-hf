@@ -310,7 +310,7 @@ def build_demo():
                 """
                 <div style="text-align: center;">
                     <p style="font-size:16px; display: inline; margin: 0;">
-                        <strong>PartCrafter</strong> – Structured 3D Mesh Generation via Compositional Latent Diffusion Transformers
+                        <strong>🧩 PartCrafter</strong> – Structured 3D Mesh Generation via Compositional Latent Diffusion Transformers
                     </p>
                     <a href="https://github.com/wgsxm/PartCrafter" style="display: inline-block; vertical-align: middle; margin-left: 0.5em;">
                         <img src="https://img.shields.io/badge/GitHub-Repo-blue" alt="GitHub Repo">
