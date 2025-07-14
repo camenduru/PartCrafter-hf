@@ -361,8 +361,8 @@ def build_demo():
                                     7,
                                 ], 
                                 [
-                                    "assets/images/np13_b07b4d858z.png", 
-                                    13,
+                                    "assets/images/np2_tree.png", 
+                                    2,
                                 ], 
                                 
                             ],
