@@ -1,17 +1,22 @@
 import spaces
 import gradio as gr
 import os
+import sys
+from glob import glob
 import time
-import torch
-import numpy as np
-from PIL import Image
-from huggingface_hub import snapshot_download
-from accelerate.utils import set_seed
-import trimesh
+from typing import Any, Union
 
-from src.utils.data_utils import get_colored_mesh_composition, export_renderings
-from src.utils.image_utils import prepare_image
+import numpy as np
+import torch
+import trimesh
+from huggingface_hub import snapshot_download
+from PIL import Image
+from accelerate.utils import set_seed
+
+from src.utils.data_utils import get_colored_mesh_composition, scene_to_parts, load_surfaces
+from src.utils.render_utils import render_views_around_mesh, render_normal_views_around_mesh, make_grid_for_images_or_videos, export_renderings
 from src.pipelines.pipeline_partcrafter import PartCrafterPipeline
+from src.utils.image_utils import prepare_image
 from src.models.briarmbg import BriaRMBG
 
 # Constants
