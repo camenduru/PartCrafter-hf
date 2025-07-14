@@ -8,6 +8,9 @@ from typing import Any, Union
 
 import numpy as np
 import torch
+
+print(f'torch version:{torch.__version__}')
+
 import trimesh
 from huggingface_hub import snapshot_download
 from PIL import Image
@@ -18,6 +21,42 @@ from src.utils.render_utils import render_views_around_mesh, render_normal_views
 from src.pipelines.pipeline_partcrafter import PartCrafterPipeline
 from src.utils.image_utils import prepare_image
 from src.models.briarmbg import BriaRMBG
+import subprocess
+import importlib, site, sys
+
+# Re-discover all .pth/.egg-link files
+for sitedir in site.getsitepackages():
+    site.addsitedir(sitedir)
+
+# Clear caches so importlib will pick up new modules
+importlib.invalidate_caches()
+
+def sh(cmd): subprocess.check_call(cmd, shell=True)
+
+def install_cuda_toolkit():
+    CUDA_TOOLKIT_URL = "https://developer.download.nvidia.com/compute/cuda/12.1.0/local_installers/cuda_12.1.0_530.30.02_linux.run"
+    CUDA_TOOLKIT_FILE = "/tmp/%s" % os.path.basename(CUDA_TOOLKIT_URL)
+    subprocess.call(["wget", "-q", CUDA_TOOLKIT_URL, "-O", CUDA_TOOLKIT_FILE])
+    subprocess.call(["chmod", "+x", CUDA_TOOLKIT_FILE])
+    subprocess.call([CUDA_TOOLKIT_FILE, "--silent", "--toolkit"])
+
+    os.environ["CUDA_HOME"] = "/usr/local/cuda"
+    os.environ["PATH"] = "%s/bin:%s" % (os.environ["CUDA_HOME"], os.environ["PATH"])
+    os.environ["LD_LIBRARY_PATH"] = "%s/lib:%s" % (
+        os.environ["CUDA_HOME"],
+        "" if "LD_LIBRARY_PATH" not in os.environ else os.environ["LD_LIBRARY_PATH"],
+    )
+    # Fix: arch_list[-1] += '+PTX'; IndexError: list index out of range
+    os.environ["TORCH_CUDA_ARCH_LIST"] = "9.0"
+    print("==> finished installation")
+    
+install_cuda_toolkit()
+
+sh("pip install diso")
+
+# tell Python to re-scan site-packages now that the egg-link exists
+import importlib, site; site.addsitedir(site.getsitepackages()[0]); importlib.invalidate_caches()
+
 
 # Constants
 MAX_NUM_PARTS = 16
