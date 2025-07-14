@@ -174,15 +174,20 @@ def run_triposg(image_path: str,
 
     export_dir = os.path.join(os.environ["PARTCRAFTER_PROCESSED"], session_id)
     os.makedirs(export_dir, exist_ok=True)
+
+    parts = []
+    
     for idx, mesh in enumerate(outputs):
-        mesh.export(os.path.join(export_dir, f"part_{idx:02}.glb"))
+        part = os.path.join(export_dir, f"part_{idx:02}.glb")
+        mesh.export(part)
+        parts.append(part)
 
     glb_path = os.path.join(export_dir, "object.glb")
     merged.export(glb_path)
 
     mesh_file = first_file_from_dir(export_dir, "glb")
     
-    return mesh_file, export_dir
+    return mesh_file, export_dir, parts
 
 def cleanup(request: gr.Request):
 
@@ -247,7 +252,8 @@ def build_demo():
                         </p>
                         """
                     )
-                    output_model = gr.Model3D(label="Merged 3D Object", height=512)
+                    output_model = gr.Model3D(label="Merged 3D Object")
+                    parts_model = gr.Model3D(label="Parts")
                     output_dir = gr.Textbox(label="Export Directory", visible=False)
                     examples = gr.Examples(
                         
@@ -266,7 +272,7 @@ def build_demo():
                             ], 
                         ],
                         inputs=[input_image, num_parts],
-                        outputs=[output_model, output_dir],
+                        outputs=[output_model, output_dir, parts_model],
                         fn=run_triposg,
                         cache_examples=True,
                     )
@@ -274,7 +280,7 @@ def build_demo():
             run_button.click(fn=run_triposg,
                              inputs=[input_image, num_parts, seed, num_tokens, num_steps,
                                      guidance, flash_decoder, remove_bg, session_state],
-                             outputs=[output_model, output_dir])
+                             outputs=[output_model, output_dir, parts_model])
         return demo
 
 if __name__ == "__main__":
