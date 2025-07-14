@@ -17,14 +17,14 @@ from PIL import Image
 from accelerate.utils import set_seed
 
 import subprocess
-# import importlib, site, sys
+import importlib, site, sys
 
-# # Re-discover all .pth/.egg-link files
-# for sitedir in site.getsitepackages():
-#     site.addsitedir(sitedir)
+# Re-discover all .pth/.egg-link files
+for sitedir in site.getsitepackages():
+    site.addsitedir(sitedir)
 
-# # Clear caches so importlib will pick up new modules
-# importlib.invalidate_caches()
+# Clear caches so importlib will pick up new modules
+importlib.invalidate_caches()
 
 # def sh(cmd): subprocess.check_call(cmd, shell=True)
 
@@ -60,8 +60,8 @@ print(f"{header_path} exists:", os.path.exists(header_path))
 subprocess.run(["pip", "install","diso"], check=True)
 
 
-# # tell Python to re-scan site-packages now that the egg-link exists
-# import importlib, site; site.addsitedir(site.getsitepackages()[0]); importlib.invalidate_caches()
+# tell Python to re-scan site-packages now that the egg-link exists
+import importlib, site; site.addsitedir(site.getsitepackages()[0]); importlib.invalidate_caches()
 
 
 from src.utils.data_utils import get_colored_mesh_composition, scene_to_parts, load_surfaces
