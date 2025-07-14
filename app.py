@@ -186,11 +186,20 @@ def build_demo():
         demo.load(start_session, outputs=[session_state])
 
         with gr.Column(elem_id="col-container"):
-
+            gr.HTML(
+                """
+                <div style="text-align: center;">
+                    <p style="font-size:16px; display: inline; margin: 0;">
+                        <strong>PartCrafter</strong> – Structured 3D Mesh Generation via Compositional Latent Diffusion Transformers
+                    </p>
+                    <a href="https://github.com/wgsxm/PartCrafter" style="display: inline-block; vertical-align: middle; margin-left: 0.5em;">
+                        <img src="https://img.shields.io/badge/GitHub-Repo-blue" alt="GitHub Repo">
+                    </a>
+                </div>
+                """
+            )
             gr.Markdown(
-            """ PartCrafter – Structured 3D Mesh Generation via Compositional Latent Diffusion Transformers
-    
-            • Source: [Github](https://github.com/wgsxm/PartCrafter)  
+            """ 
             • HF Space by : [@alexandernasa](https://twitter.com/alexandernasa/)  """
             )
             with gr.Row():
