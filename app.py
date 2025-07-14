@@ -271,11 +271,11 @@ def run_triposg(image_path: str,
     
     # Merge and color
     merged = get_colored_mesh_composition(outputs)
-    split_mesh = explode_mesh(merged)
-
 
     merged_path = os.path.join(export_dir, "object.glb")
     merged.export(merged_path)
+    
+    split_mesh = explode_mesh(merged)
 
     split_preview_path = os.path.join(export_dir, "object.glb")
     split_mesh.export(split_preview_path)
@@ -325,7 +325,7 @@ def build_demo():
             )
             with gr.Row():
                 with gr.Column(scale=1):
-                    input_image = gr.Image(type="filepath", label="Input Image")
+                    input_image = gr.Image(type="filepath", label="Input Image", height=256)
                     num_parts = gr.Slider(1, MAX_NUM_PARTS, value=4, step=1, label="Number of Parts")
                     run_button = gr.Button("Generate 3D Parts", variant="primary")
                     
@@ -345,35 +345,34 @@ def build_demo():
                         </p>
                         """
                     )
-                    with gr.Row(scale=2):
-                        output_model = gr.Model3D(label="Merged 3D Object")
-                        split_model = gr.Model3D(label="Split Preview")
-                        output_dir = gr.Textbox(label="Export Directory", visible=False)
-                    with gr.Row(scale=1):
-                        download_zip = gr.File(label="Download All Parts (zip)")
-                    with gr.Row(scale=3):
-                        examples = gr.Examples(
+                    output_model = gr.Model3D(label="Merged 3D Object")
+                    split_model = gr.Model3D(label="Split Preview")
+                    output_dir = gr.Textbox(label="Export Directory", visible=False)
+                    download_zip = gr.File(label="Download All Parts (zip)")
+            with gr.Row():
+                with gr.Column():
+                    examples = gr.Examples(
+                        
+                        examples=[
+                            [
+                                "assets/images/np5_b81f29e567ea4db48014f89c9079e403.png", 
+                                5,
+                            ], 
+                            [
+                                "assets/images/np7_1c004909dedb4ebe8db69b4d7b077434.png", 
+                                7,
+                            ], 
+                            [
+                                "assets/images/np2_tree.png", 
+                                3,
+                            ], 
                             
-                            examples=[
-                                [
-                                    "assets/images/np5_b81f29e567ea4db48014f89c9079e403.png", 
-                                    5,
-                                ], 
-                                [
-                                    "assets/images/np7_1c004909dedb4ebe8db69b4d7b077434.png", 
-                                    7,
-                                ], 
-                                [
-                                    "assets/images/np2_tree.png", 
-                                    2,
-                                ], 
-                                
-                            ],
-                            inputs=[input_image, num_parts],
-                            outputs=[output_model, split_model, output_dir, download_zip],
-                            fn=run_triposg,
-                            cache_examples=True,
-                        )
+                        ],
+                        inputs=[input_image, num_parts],
+                        outputs=[output_model, split_model, output_dir, download_zip],
+                        fn=run_triposg,
+                        cache_examples=True,
+                    )
     
             run_button.click(fn=run_triposg,
                              inputs=[input_image, num_parts, seed, num_tokens, num_steps,
