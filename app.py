@@ -257,8 +257,8 @@ def build_demo():
                                 5,
                             ], 
                             [
-                                "assets/images/np10_cc486e491a2c499f9fd2aad2b02c6ccb.png", 
-                                10,
+                                "assets/images/np5_bird.png", 
+                                5,
                             ], 
                             [
                                 "assets/images/np4_7bd5d25aa77b4fb18e780d7a4c97d342.png", 
