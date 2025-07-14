@@ -1,6 +1,6 @@
 ---
 title: PartCrafter
-emoji: 🌍
+emoji: 🧩
 colorFrom: blue
 colorTo: pink
 sdk: gradio
