@@ -76,3 +76,4 @@ assets/objects/scissors.glb filter=lfs diff=lfs merge=lfs -text
 assets/objects/sword.glb filter=lfs diff=lfs merge=lfs -text
 assets/robot.gif filter=lfs diff=lfs merge=lfs -text
 assets/teaser.png filter=lfs diff=lfs merge=lfs -text
+examples/np10_cc486e491a2c499f9fd2aad2b02c6ccb.png filter=lfs diff=lfs merge=lfs -text
