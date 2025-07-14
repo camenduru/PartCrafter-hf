@@ -187,7 +187,7 @@ def run_triposg(image_path: str,
 
     mesh_file = first_file_from_dir(export_dir, "glb")
     
-    return mesh_file, export_dir, parts
+    return mesh_file, export_dir
 
 def cleanup(request: gr.Request):
 
@@ -272,7 +272,7 @@ def build_demo():
                             ], 
                         ],
                         inputs=[input_image, num_parts],
-                        outputs=[output_model, output_dir, parts_model],
+                        outputs=[output_model, output_dir],
                         fn=run_triposg,
                         cache_examples=True,
                     )
@@ -280,7 +280,7 @@ def build_demo():
             run_button.click(fn=run_triposg,
                              inputs=[input_image, num_parts, seed, num_tokens, num_steps,
                                      guidance, flash_decoder, remove_bg, session_state],
-                             outputs=[output_model, output_dir, parts_model])
+                             outputs=[output_model, output_dir])
         return demo
 
 if __name__ == "__main__":
