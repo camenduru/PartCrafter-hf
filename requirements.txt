@@ -4,7 +4,6 @@ nvitop
 diffusers
 transformers
 einops
-huggingface_hub
 opencv-python
 trimesh
 omegaconf
@@ -17,6 +16,6 @@ typeguard
 matplotlib
 imageio-ffmpeg
 pyrender
-#deepspeed
+deepspeed
 wandb[media]
 colormaps
