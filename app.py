@@ -8,6 +8,7 @@ from typing import Any, Union
 
 import numpy as np
 import torch
+import uuid
 
 print(f'torch version:{torch.__version__}')
 
@@ -54,8 +55,8 @@ print("installing cuda toolkit")
 install_cuda_toolkit()
 print("finished")
 
-header_path = "/usr/local/cuda/include/cuda_runtime.h"
-print(f"{header_path} exists:", os.path.exists(header_path))
+os.environ["PARTCRAFTER_PROCESSED"] = f"{os.getcwd()}/proprocess_results"
+
 
 def sh(cmd_list, extra_env=None):
     env = os.environ.copy()
@@ -107,14 +108,19 @@ def run_triposg(image_path: str,
                 num_inference_steps: int = 50,
                 guidance_scale: float = 7.0,
                 use_flash_decoder: bool = False,
-                rmbg: bool = True):
+                rmbg: bool = True,
+                session_id = None,
+                progress=gr.Progress(track_tqdm=True),):
 
-    max_num_expanded_coords = 1e9
-    
     """
     Generate 3D part meshes from an input image.
     """
 
+    max_num_expanded_coords = 1e9
+
+    if session_id is None:
+        session_id = uuid.uuid4().hex
+        
     if rmbg:
         img_pil = prepare_image(image_path, bg_color=np.array([1.0, 1.0, 1.0]), rmbg_net=rmbg_net)
     else:
@@ -143,9 +149,7 @@ def run_triposg(image_path: str,
     # Merge and color
     merged = get_colored_mesh_composition(outputs)
 
-    # Export meshes and return results
-    timestamp = time.strftime("%Y%m%d_%H%M%S")
-    export_dir = os.path.join("results", timestamp)
+    export_dir = os.path.join(os.environ["PARTCRAFTER_PROCESSED"], session_id)
     os.makedirs(export_dir, exist_ok=True)
     for idx, mesh in enumerate(outputs):
         mesh.export(os.path.join(export_dir, f"part_{idx:02}.glb"))
@@ -157,7 +161,17 @@ def run_triposg(image_path: str,
     
     return mesh_file, export_dir
 
-# Gradio Interface
+def cleanup(request: gr.Request):
+
+    sid = request.session_hash
+    if sid:
+        d1 = os.path.join(os.environ["PARTCRAFTER_PROCESSED"], sid)
+        shutil.rmtree(d1, ignore_errors=True)
+        
+def start_session(request: gr.Request):
+
+    return request.session_hash
+    
 def build_demo():
     css = """
         #col-container {
@@ -168,7 +182,9 @@ def build_demo():
     theme = gr.themes.Ocean()
     
     with gr.Blocks(css=css, theme=theme) as demo:
-    
+        session_state = gr.State()
+        demo.load(start_session, outputs=[session_state])
+
         with gr.Column(elem_id="col-container"):
 
             gr.Markdown(
@@ -195,7 +211,7 @@ def build_demo():
                     gr.HTML(
                         """
                         <p style="opacity: 0.6; font-style: italic;">
-                          This might take a few seconds to load the 3D model
+                          The 3D Preview might take a few seconds to load the 3D model
                         </p>
                         """
                     )
@@ -225,10 +241,12 @@ def build_demo():
     
             run_button.click(fn=run_triposg,
                              inputs=[input_image, num_parts, seed, num_tokens, num_steps,
-                                     guidance, flash_decoder, remove_bg],
+                                     guidance, flash_decoder, remove_bg, session_state],
                              outputs=[output_model, output_dir])
         return demo
 
 if __name__ == "__main__":
     demo = build_demo()
+    demo.unload(cleanup)
+    demo.queue()
     demo.launch()
