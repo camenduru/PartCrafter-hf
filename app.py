@@ -106,20 +106,12 @@ def run_triposg(image_path: str,
                 num_tokens: int = 1024,
                 num_inference_steps: int = 50,
                 guidance_scale: float = 7.0,
-                max_num_expanded_coords: float = 1e9,
+                max_num_expanded_coords: str = 1e9,
                 use_flash_decoder: bool = False,
                 rmbg: bool = True):
     """
     Generate 3D part meshes from an input image.
     """
-
-    num_parts = 3
-    seed  = 0
-    num_tokens = 1024
-    num_inference_steps = 50
-    guidance_scale = 7
-    max_num_expanded_coords = 1e9
-    use_flash_decoder = False
 
     if rmbg:
         img_pil = prepare_image(image_path, bg_color=np.array([1.0, 1.0, 1.0]), rmbg_net=rmbg_net)
