@@ -175,7 +175,7 @@ def build_demo():
                 examples = gr.Examples(
                     examples=[
                         [
-                            "assets/images/np10_cc486e491a2c499f9fd2aad2b02c6ccb.png", 
+                            "examples/np10_cc486e491a2c499f9fd2aad2b02c6ccb.png", 
                             10,
                             123,
                             1024,
@@ -183,7 +183,7 @@ def build_demo():
                             7.0,
                             1e9,
                             False,
-                            True
+                            False
                         ], 
                         
                     ],
