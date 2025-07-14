@@ -9,6 +9,7 @@ from typing import Any, Union
 import numpy as np
 import torch
 import uuid
+import shutil
 
 print(f'torch version:{torch.__version__}')
 
@@ -99,7 +100,29 @@ def first_file_from_dir(directory, ext):
     files = glob.glob(os.path.join(directory, f"*.{ext}"))
     return sorted(files)[0] if files else None
 
-@spaces.GPU()
+def get_duration(
+    image_path,
+    num_parts,
+    seed,
+    num_tokens,
+    num_inference_steps,
+    guidance_scale,
+    use_flash_decoder,
+    rmbg,
+    session_id,
+    progress,
+    ):
+
+    duration_seconds = 60
+
+    if num_parts > 5:
+        duration_seconds = 75
+    elif num_parts > 10:
+        duration_seconds = 90
+    return int(duration_seconds)
+        
+    
+@spaces.GPU(duration=get_duration)
 @torch.no_grad()
 def run_triposg(image_path: str,
                 num_parts: int = 1,
