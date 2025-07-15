@@ -296,7 +296,7 @@ def build_demo():
     css = """
         #col-container {
             margin: 0 auto;
-            max-width: 1280px;
+            max-width: 1480px;
         }
         """
     theme = gr.themes.Ocean()
