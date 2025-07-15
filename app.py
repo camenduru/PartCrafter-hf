@@ -296,7 +296,7 @@ def build_demo():
     css = """
         #col-container {
             margin: 0 auto;
-            max-width: 1480px;
+            max-width: 1560px;
         }
         """
     theme = gr.themes.Ocean()
@@ -345,8 +345,8 @@ def build_demo():
                         """
                     )
                     with gr.Row():
-                        output_model = gr.Model3D(label="Merged 3D Object")
-                        split_model = gr.Model3D(label="Split Preview")
+                        output_model = gr.Model3D(label="Merged 3D Object", height=512)
+                        split_model = gr.Model3D(label="Split Preview", height=512)
                         output_dir = gr.Textbox(label="Export Directory", visible=False)
                         download_zip = gr.File(label="Download All Parts (zip)", visible=False)
             with gr.Row():
