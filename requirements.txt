@@ -19,4 +19,4 @@ deepspeed
 wandb[media]
 colormaps
 torchvision
-torch_cluster
+git+https://github.com/facebookresearch/pytorch3d.git@stable
