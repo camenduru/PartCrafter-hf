@@ -368,7 +368,7 @@ def build_demo():
                         inputs=[input_image, num_parts],
                         outputs=[output_model, split_model, output_dir, download_zip],
                         fn=run_triposg,
-                        cache_examples=True,
+                        cache_examples=False,
                     )
     
             run_button.click(fn=run_triposg,

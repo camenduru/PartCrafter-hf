@@ -19,4 +19,5 @@ deepspeed
 wandb[media]
 colormaps
 torchvision
-git+https://github.com/facebookresearch/pytorch3d.git@stable
+https://github.com/camenduru/wheels/releases/download/colab4/torch_cluster-1.6.3-cp311-cp311-linux_x86_64.whl
+https://github.com/camenduru/wheels/releases/download/colab4/pytorch3d-0.7.8-cp311-cp311-linux_x86_64.whl
