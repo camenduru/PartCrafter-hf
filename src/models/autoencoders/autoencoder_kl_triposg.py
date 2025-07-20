@@ -12,8 +12,8 @@ from diffusers.models.normalization import FP32LayerNorm, LayerNorm
 from diffusers.utils import logging
 from diffusers.utils.accelerate_utils import apply_forward_hook
 from einops import repeat
-# from torch_cluster import fps
-from pytorch3d.ops import sample_farthest_points
+from torch_cluster import fps
+# from pytorch3d.ops import sample_farthest_points
 from tqdm import tqdm
 
 from ..attention_processor import FusedTripoSGAttnProcessor2_0, TripoSGAttnProcessor2_0, FlashTripo2AttnProcessor2_0
@@ -400,43 +400,6 @@ class TripoSGVAEModel(ModelMixin, ConfigMixin):
         """
         self.use_slicing = False
 
-    # def _sample_features(
-    #     self, x: torch.Tensor, num_tokens: int = 2048, seed: Optional[int] = None
-    # ):
-    #     """
-    #     Sample points from features of the input point cloud.
-
-    #     Args:
-    #         x (torch.Tensor): The input point cloud. shape: (B, N, C)
-    #         num_tokens (int, optional): The number of points to sample. Defaults to 2048.
-    #         seed (Optional[int], optional): The random seed. Defaults to None.
-    #     """
-    #     rng = np.random.default_rng(seed)
-    #     indices = rng.choice(
-    #         x.shape[1], num_tokens * 4, replace=num_tokens * 4 > x.shape[1]
-    #     )
-    #     selected_points = x[:, indices]
-
-    #     batch_size, num_points, num_channels = selected_points.shape
-    #     flattened_points = selected_points.view(batch_size * num_points, num_channels)
-    #     batch_indices = (
-    #         torch.arange(batch_size).to(x.device).repeat_interleave(num_points)
-    #     )
-
-    #     # fps sampling
-    #     sampling_ratio = 1.0 / 4
-    #     sampled_indices = fps(
-    #         flattened_points[:, :3],
-    #         batch_indices,
-    #         ratio=sampling_ratio,
-    #         random_start=self.training,
-    #     )
-    #     sampled_points = flattened_points[sampled_indices].view(
-    #         batch_size, -1, num_channels
-    #     )
-
-    #     return sampled_points
-
     def _sample_features(
         self, x: torch.Tensor, num_tokens: int = 2048, seed: Optional[int] = None
     ):
@@ -454,16 +417,53 @@ class TripoSGVAEModel(ModelMixin, ConfigMixin):
         )
         selected_points = x[:, indices]
 
-        # Use farthest point sampling
-        xyz = selected_points[:, :, :3]  # (B, N, 3)
-        sampled_xyz, sampled_indices = sample_farthest_points(xyz, K=num_tokens)
+        batch_size, num_points, num_channels = selected_points.shape
+        flattened_points = selected_points.view(batch_size * num_points, num_channels)
+        batch_indices = (
+            torch.arange(batch_size).to(x.device).repeat_interleave(num_points)
+        )
 
-        # Gather sampled features
-        batch_size = x.size(0)
-        batch_indices = torch.arange(batch_size, device=x.device).view(-1, 1, 1)
-        sampled_points = selected_points[batch_indices, sampled_indices]  # (B, num_tokens, C)
+        # fps sampling
+        sampling_ratio = 1.0 / 4
+        sampled_indices = fps(
+            flattened_points[:, :3],
+            batch_indices,
+            ratio=sampling_ratio,
+            random_start=self.training,
+        )
+        sampled_points = flattened_points[sampled_indices].view(
+            batch_size, -1, num_channels
+        )
 
         return sampled_points
+
+    # def _sample_features(
+    #     self, x: torch.Tensor, num_tokens: int = 2048, seed: Optional[int] = None
+    # ):
+    #     """
+    #     Sample points from features of the input point cloud.
+
+    #     Args:
+    #         x (torch.Tensor): The input point cloud. shape: (B, N, C)
+    #         num_tokens (int, optional): The number of points to sample. Defaults to 2048.
+    #         seed (Optional[int], optional): The random seed. Defaults to None.
+    #     """
+    #     rng = np.random.default_rng(seed)
+    #     indices = rng.choice(
+    #         x.shape[1], num_tokens * 4, replace=num_tokens * 4 > x.shape[1]
+    #     )
+    #     selected_points = x[:, indices]
+
+    #     # Use farthest point sampling
+    #     xyz = selected_points[:, :, :3]  # (B, N, 3)
+    #     sampled_xyz, sampled_indices = sample_farthest_points(xyz, K=num_tokens)
+
+    #     # Gather sampled features
+    #     batch_size = x.size(0)
+    #     batch_indices = torch.arange(batch_size, device=x.device).view(-1, 1, 1)
+    #     sampled_points = selected_points[batch_indices, sampled_indices]  # (B, num_tokens, C)
+
+    #     return sampled_points
 
     def _encode(
         self, x: torch.Tensor, num_tokens: int = 2048, seed: Optional[int] = None
