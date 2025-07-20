@@ -51,9 +51,9 @@ def install_cuda_toolkit():
     os.environ["TORCH_CUDA_ARCH_LIST"] = "8.9;9.0"
     print("==> finished installation")
 
-print("installing cuda toolkit")
-install_cuda_toolkit()
-print("finished")
+# print("installing cuda toolkit")
+# install_cuda_toolkit()
+# print("finished")
 
 os.environ["PARTCRAFTER_PROCESSED"] = f"{os.getcwd()}/proprocess_results"
 
