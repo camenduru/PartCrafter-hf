@@ -1,4 +1,3 @@
-import spaces
 import gradio as gr
 import os
 import sys
@@ -199,8 +198,6 @@ def get_duration(
         duration_seconds = 90
     return int(duration_seconds)
         
-    
-@spaces.GPU(duration=get_duration)
 @torch.no_grad()
 def run_triposg(image_path: str,
                 num_parts: int = 1,
